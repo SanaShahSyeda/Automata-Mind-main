@@ -1,0 +1,38 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("./imgs/bg.png");
+}
+
+.start_page h1 {
+  text-align: center;
+  margin-top: 100px;
+  font-size: 80px;
+  text-transform: uppercase;
+  color: rgb(51, 192, 227);
+  text-shadow: 0 9px 8px rgb(159, 179, 183);
+}
+
+.text-center button {
+  height: 180px;
+  width: 180px;
+  font-size: 25px;
+  color: rgb(220, 225, 226);
+
+  font-weight: bolder;
+  margin-top: 170px;
+  border-radius: 100px;
+  border: 5px solid rgb(220, 225, 226);
+  background-color: rgb(122, 201, 220);
+}
+.text-center button:hover {
+  color: rgb(122, 201, 220);
+  box-shadow: none;
+  border: 5px solid rgb(122, 201, 220);
+  background-color: whitesmoke;
+}

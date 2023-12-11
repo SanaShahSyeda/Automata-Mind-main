@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LEVELS</title>
+    <link rel="stylesheet" href="levels.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="levels">
+      <div class="column" id="level1">
+        <h3>LEVEL 1</h3>
+        <img src="imgs/lock.png" data-url="level_1.html" alt="" />
+      </div>
+      <div class="column" id="level2">
+        <h3>LEVEL 2</h3>
+        <img src="imgs/lock.png" data-url="level_2.html" alt="" />
+      </div>
+      <div class="column" id="level3">
+        <h3>LEVEL 3</h3>
+        <img src="imgs/lock.png" data-url="level_3.html" alt="" />
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const imageContainer = document.querySelectorAll(".levels .column");
+
+        imageContainer.forEach((container) => {
+          const images = container.querySelectorAll("img");
+
+          images.forEach((image) => {
+            image.addEventListener("click", function () {
+              const url = this.getAttribute("data-url");
+              if (url) {
+                window.location.href = url;
+              }
+            });
+          });
+        });
+      });
+      // In level2.js
+      if (localStorage.getItem("level1Won") === "true") {
+        // Code to unlock level 2
+        document.getElementById("level1").style.pointerEvents = "fill";
+      }
+    </script>
+  </body>
+</html>

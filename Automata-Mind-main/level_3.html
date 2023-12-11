@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>level_3</title>
+    <link rel="stylesheet" href="levels.css" />
+  </head>
+  <body>
+    <div class="level_top">
+      <img src="imgs/left-arrow.png" alt="" id="arrow" onclick="showPopup()" />
+      <h3>Guesses Left: <span class="guess">3</span></h3>
+    </div>
+    <div class="card w-50 mx-auto custom_card">
+      <div
+        class="card-header bg-info text-dark"
+        style="
+          color: rgb(210, 159, 159);
+          text-transform: uppercase;
+          font-size: 18px;
+        "
+      >
+        Regular Grammar
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Grammar:1</h5>
+        <p class="card-text">1: S --> Ab<br />2: A --> aAb<br />3: A --> λ</p>
+        <a
+          href="#"
+          class="btn btn-info w-25 next"
+          aria-disabled="true"
+          onclick="nextGrammar()"
+          >NEXT
+        </a>
+        <a href="#" class="btn btn-info w-25" onclick="showInstructions()"
+          >INSTRUCTIONS</a
+        >
+      </div>
+    </div>
+    <div id="instructionsModal" class="modal">
+      <h2>Instructions</h2>
+      <p>. The Regular Grammar and Language is provided to you.</p>
+      <p>. You have to tell steps from Grammar to generate given Language.</p>
+      <p>. On each incorrect step, a guess is lost.</p>
+      <p>. On each correct step, you are way towards success.</p>
+      <p>Best Of Luck !!</p>
+      <button class="btn btn-dark w-25" onclick="hideInstructions()">
+        Close
+      </button>
+    </div>
+    <div id="overlay" class="overlay"></div>
+    <div
+      class="btn-toolbar"
+      role="toolbar"
+      aria-label="Toolbar with button groups"
+    >
+      <div
+        class="btn-group me-4 mx-auto mt-3"
+        role="group"
+        aria-label="First group "
+      >
+        <button id="btn1" type="button" class="btn btn-info mr-3">1</button>
+        <button id="btn2" type="button" class="btn btn-info mr-3">2</button>
+        <button id="btn3" type="button" class="btn btn-info mr-3">3</button>
+      </div>
+    </div>
+
+    <div class="RL_portion">
+      <div class="RL_generator">
+        <p>*</p>
+      </div>
+      <div class="language">
+        <h3><span style="color: green">Language:</span> aabbb</h3>
+      </div>
+    </div>
+    <div class="popup-container">
+      <p>Do you want to exit?</p>
+      <button class="btn btn-info" onclick="handleYes()">Yes</button>
+      <button class="btn btn-info" onclick="handleNo()">No</button>
+    </div>
+    <div class="popup"></div>
+    <script>
+      document.querySelector(".next").setAttribute("aria-disabled", "true");
+      document.querySelector(".next").classList.add("disabled");
+      document.querySelector(".next").disabled = true;
+      function showInstructions() {
+        var modal = document.getElementById("instructionsModal");
+        var overlay = document.getElementById("overlay");
+        modal.style.display = "block";
+        overlay.style.display = "block";
+      }
+
+      function hideInstructions() {
+        var modal = document.getElementById("instructionsModal");
+        var overlay = document.getElementById("overlay");
+        modal.style.display = "none";
+        overlay.style.display = "none";
+      }
+
+      const btn1 = document.getElementById("btn1");
+      const btn2 = document.getElementById("btn2");
+      const btn3 = document.getElementById("btn3");
+      // Assuming btn1, btn2, and btn3 are your buttons
+      const buttons = [btn1, btn2, btn3];
+      let count = 0;
+      let guess = 3;
+
+      buttons.forEach((button, index) => {
+        button.addEventListener("click", function () {
+          const patterns = ["Ab", "aAbb", "aaAbbb", "aabbb"];
+
+          if (count === 0 && index === 0) {
+            document.querySelector(".RL_generator").innerHTML = patterns[count];
+            count++;
+          } else if (count >= 1 && count <= 2 && index === 1) {
+            document.querySelector(".RL_generator").innerHTML = patterns[count];
+            count++;
+          } else if (count === 3 && index === 2) {
+            document.querySelector(".RL_generator").innerHTML = patterns[count];
+            count++;
+            if (document.querySelector(".RL_generator").innerHTML === "aabbb") {
+              document.querySelector(
+                ".RL_generator"
+              ).innerHTML = `<img style="width:150px; margin-top:-25px;" src="imgs/congrats.png"> `;
+              document.querySelector(
+                ".language"
+              ).innerHTML = `<img style="width:200px; margin-top:-80px;margin-bottom:-40px;" src="imgs/congrats_Aslii.png">`;
+              document
+                .querySelector(".next")
+                .setAttribute("aria-disabled", "false");
+              document.querySelector(".next").classList.remove("disabled");
+
+              buttons.forEach(function (button) {
+                button.disabled = true;
+              });
+            }
+          } else {
+            document.querySelector(".RL_generator").innerHTML =
+              "Oops! You lost a guess";
+            guess--;
+            document.querySelector(".guess").innerHTML = guess;
+            console.log("Guesss" + guess);
+            if (guess == 0) {
+              document.body.innerHTML = `<div class="game-over">
+              <div class="gameOver">
+                <img src="imgs/game_over_img (2).png" alt="" />
+              </div>
+              <div class="tryAgain">
+                <img id ="try_again" src="imgs/tryAgain-bg.png" alt="" />
+              </div>
+            </div>`;
+            }
+          }
+        });
+      });
+      document.body.addEventListener("click", function (event) {
+        if (event.target.id === "try_again") {
+          window.location.href = "level_3.html";
+        }
+      });
+      function handleYes() {
+        window.location.href = "levels.html";
+      }
+      function handleNo() {
+        var modal1 = document.querySelector(".popup-container");
+        modal1.style.display = "none";
+        var modal = document.querySelector(".popup");
+        modal.style.display = "none";
+      }
+
+      function showPopup() {
+        const popupContainer = document.querySelector(".popup-container");
+        popupContainer.style.display = "block";
+        var modal = document.querySelector(".popup");
+        modal.style.display = "block";
+      }
+
+      function nextGrammar() {
+        //     document.body.innerHTML = ` <div class="level_top">
+        //         <img src="imgs/left-arrow.png" alt="" id="arrow" onclick="showPopup()" />
+        //         <h3>Guesses Left: <span class="guess">3</span></h3>
+        //       </div>
+        //       <div class="card w-50 mx-auto custom_card">
+        //         <div
+        //           class="card-header bg-info text-dark"
+        //           style="
+        //             color: rgb(210, 159, 159);
+        //             text-transform: uppercase;
+        //             font-size: 18px;
+        //           "
+        //         >
+        //           Regular Grammar
+        //         </div>
+        //         <div class="card-body">
+        //           <h5 class="card-title">Grammar:2</h5>
+        //           <p class="card-text">1: S --> aA|b<br />2: A --> aaB<br />3: B -->bB|a</p>
+        //           <a href="#" class="btn btn-info w-25" onclick="nextGrammar()">NEXT </a>
+        //           <a href="#" class="btn btn-info w-25" onclick="showInstructions()">INSTRUCTIONS</a
+        //           ></div></div>
+        //       <div id="instructionsModal" class="modal">
+        //         <h2>Instructions</h2>
+        //         <p>. The Regular Grammar and Language is provided to you.</p>
+        //         <p>. You have to tell steps from Grammar to generate given Language.</p>
+        //         <p>. On each incorrect step, a guess is lost.</p>
+        //         <p>. On each correct step, you are way towards success.</p>
+        //         <p>Best Of Luck !!</p>
+        //         <button class="btn btn-dark w-25" onclick="hideInstructions()">
+        //           Close
+        //         </button>
+        //       </div>
+        //       <div id="overlay" class="overlay"></div>
+        //       <div class="dropdown">
+        //   <select name="" id="One" class="abc">
+        //     <option value="aA">aA</option>
+        //     <option value="b">b</option>
+        //   </select>
+        //   <select name="" id="Two" class="abc">
+        //     <option value="aaB">aaB</option>
+        //   </select>
+        //   <select name="" id="Three" class="abc">
+        //     <option value="bB">bB</option>
+        //     <option value="a">a</option>
+        //   </select>
+        // </div>
+        // </div>
+        //   </div>
+        //   </div> <div class="RL_portion">
+        //         <div class="RL_generator">
+        //           <p>*</p>
+        //         </div>
+        //         <div class="language">
+        //           <h3><span style="color: green">Language:</span> aabbb</h3>
+        //         </div>
+        //       </div>
+        //       <div class="popup-container">
+        //         <p>Do you want to exit?</p>
+        //         <button class="btn btn-info" onclick="handleYes()">Yes</button>
+        //         <button class="btn btn-info" onclick="handleNo()">No</button>
+        //       </div>
+        //       <div class="popup"></div>`;
+        window.location.href = "temp.html";
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        var dropdowns = document.querySelectorAll(".abc");
+
+        dropdowns.forEach(function (dropdown) {
+          dropdown.addEventListener("change", function () {
+            console.log("Dropdown changed:", dropdown.value);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
